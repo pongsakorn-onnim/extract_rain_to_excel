@@ -1,0 +1,103 @@
+# configs/config.yaml
+# Central configuration for the project.
+# This file is designed to support:
+# - EDA (metadata inspection & sanity checks)
+# - Production extraction (zonal mean -> Excel) in the next phase
+
+project:
+  name: extract_rain_to_excel
+  description: "Extract monthly forecast rainfall to region/basin summaries and compare with 30-year normal."
+  timezone: "Asia/Bangkok"
+
+run:
+  # What you want to inspect/run now
+  init_month: "202602"         # YYYYMM
+  leads: [0, 1, 2, 3, 4, 5]     # always 0..5, but keep configurable for future flexibility
+
+paths:
+  # Forecast rainfall root folder (contains init_month subfolders: 202601, 202602, ...)
+  fcst_root: "D:/HII/OneDrive/HydroDataSci/Data/OneMap/Leaflet/out/OM"
+
+  # 30-year normal rainfall ASCII rasters (monthly climatology)
+  normal30y_ascii_dir: "D:/HII/OneDrive/HydroDataSci/Data/Rainfall/Interpolation/TMD/Raster/avg30y_update202111/avg30y_update202111/ascii"
+
+  # Zonal polygons
+  basin_shp: "D:/HII/OneDrive/HydroDataSci/Data/Shapefile/basin_22/MainBasin_ONWR_WGS84_4K_3A_With_combindIsland_wgs.shp"
+  region_shp: "D:/HII/OneDrive/HydroDataSci/Data/Shapefile/6Region/thai_bound6region_tmd_WGS.shp"
+
+output:
+  # All generated outputs should live under this root.
+  root: "outputs"
+
+  # EDA outputs
+  eda_dir: "outputs/eda"
+  eda_report_name: "eda_report_{init_month}.txt"
+
+  # Production outputs (future)
+  extract_dir: "outputs/extract"
+  excel_name: "rain_summary_{init_month}.xlsx"
+
+models:
+  # Canonical model list
+  order: ["HII", "OM_M", "OM_U", "OM_L"]
+
+  # สังเกตว่าต้องมี filename: ย่อหน้าเข้ามาก่อน แล้วค่อยเป็น prefix:
+  HII:
+    key: "HII"
+    filename:
+      prefix: "rain_fcst_hii_"
+      ext: ".asc"
+
+  OM_M:
+    key: "OM_M"
+    filename:
+      prefix: "OM_MFCST_"
+      ext: ".asc"
+
+  OM_U:
+    key: "OM_U"
+    filename:
+      prefix: "OM_UFCST_"
+      ext: ".asc"
+
+  OM_L:
+    key: "OM_L"
+    filename:
+      prefix: "OM_LFCST_"
+      ext: ".asc"
+
+normal30y:
+  # Monthly climatology file naming
+  filename:
+    prefix: "avg30y_"
+    month_format: "%m"               # 01..12
+    suffix: "_update202111"
+    ext: ".asc"
+
+zones:
+  basin:
+    id_field: "MB_CODE"
+    name_field_th: "MBASIN_T"
+    name_field_en: "MBASIN_E"
+  region:
+    id_field: "REG_CODE"
+    name_field_th: "FIRST_REGI"
+
+modes:
+  # EDA mode settings (metadata inspection, cheap sanity checks)
+  eda:
+    enabled: true
+    normal_months_to_check: ["02", "08"]   # check a couple of months for metadata alignment
+    compute_basic_stats: true              # min/max/mean/%nodata (cheap)
+    max_sample_cells: 200000               # safety cap for sampling-based stats (keeps EDA fast)
+
+  # Extraction mode settings (future)
+  extract:
+    enabled: false
+    excel_write: true
+    include_thai_names: true
+    metrics:
+      - fcst_mean_mm
+      - clim30_mean_mm
+      - anomaly_mm
+      - anomaly_pct

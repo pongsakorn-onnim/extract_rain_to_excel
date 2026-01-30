@@ -1,0 +1,58 @@
+# ===============================
+# Python basics
+# ===============================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ===============================
+# IDE / Editor
+# ===============================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===============================
+# Jupyter / Notebooks
+# ===============================
+.ipynb_checkpoints/
+
+# ===============================
+# OS files
+# ===============================
+.DS_Store
+Thumbs.db
+
+# ===============================
+# Project outputs (IMPORTANT)
+# ===============================
+# All generated outputs (EDA reports, Excel results, logs)
+outputs/**
+
+# But keep folder structure via .gitkeep
+!outputs/**/.gitkeep
+
+# ===============================
+# Temporary / Logs
+# ===============================
+*.log
+*.tmp
+
+# ===============================
+# Large data / external data (we use OneDrive paths)
+# ===============================
+data/**
+!data/.gitkeep
+
+# ===============================
+# Test cache
+# ===============================
+.pytest_cache/
