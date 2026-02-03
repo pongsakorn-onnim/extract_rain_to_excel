@@ -36,6 +36,8 @@ Thumbs.db
 # ===============================
 # All generated outputs (EDA reports, Excel results, logs)
 outputs/**
+*.xlsx
+*.log
 
 # But keep folder structure via .gitkeep
 !outputs/**/.gitkeep
