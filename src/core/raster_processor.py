@@ -77,7 +77,7 @@ class RasterProcessor:
             logger.warning(f"Raster not found: {raster_path}")
             return pd.DataFrame() # Return empty if file missing
 
-        logger.info(f"Processing zonal stats for: {raster_path.name}")
+        logger.debug(f"Processing zonal stats for: {raster_path.name}")
         
         # ใช้ rasterstats.zonal_stats
         # stats="mean" คือสิ่งที่เราต้องการ
