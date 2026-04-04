@@ -89,7 +89,7 @@ python main.py
 
 ### 2. รันโดยระบุเดือนใหม่ (Override CLI)
 ```bash
-python main.py --init 202603
+python main.py --init 2026031
 ```
 
 ---

@@ -54,7 +54,7 @@ class RasterProcessor:
         base_dir = self.fcst_root / init_str / "OM"
         
         # Filename construction
-        prefix = model_cfg['filename']['prefix'] # e.g. "OM_MFCST_"
+        prefix = model_cfg['filename']['prefix'] # e.g. "OM_WFCST_"
         ext = model_cfg['filename']['ext']       # ".asc"
         filename = f"{prefix}{target_str}{ext}"
         

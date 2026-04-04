@@ -10,6 +10,7 @@ from src.utils.config_loader import load_config
 from src.core.raster_processor import RasterProcessor
 from src.core.calculator import enrich_dataframe_with_metrics
 from src.export.excel_writer import export_to_excel
+from src.api import run_obs_diff_batch_extraction
 
 # Setup Logging
 logging.basicConfig(
@@ -163,9 +164,22 @@ def main():
         output_filename = cfg['output']['excel_name'].replace("{init_month}", init_month_str)
         output_path = Path(cfg['output']['extract_dir']) / output_filename
         export_to_excel(dfs_to_export, output_path)
-        logger.info(f"=== JOB FINISHED: {output_path} ===")
+        logger.info(f"=== Forecast extraction finished: {output_path} ===")
     else:
-        logger.warning("No data processed.")
+        logger.warning("No forecast data processed.")
+
+    # Obs-diff batch extraction (group 2.10)
+    logger.info(f"Starting obs-diff extraction for init month: {init_month_str}")
+    init_year_int  = int(init_month_str[:4])
+    init_month_int = int(init_month_str[4:])
+    obs_diff_df = run_obs_diff_batch_extraction(init_year_int, init_month_int)
+    if not obs_diff_df.empty:
+        obs_diff_filename = cfg['output']['obs_diff_excel_name'].replace("{init_month}", init_month_str)
+        obs_diff_path = Path(cfg['output']['extract_dir']) / obs_diff_filename
+        export_to_excel({"ObsDiff_Region": obs_diff_df}, obs_diff_path)
+        logger.info(f"=== Obs-diff extraction finished: {obs_diff_path} ===")
+    else:
+        logger.warning("No obs-diff data processed — rasters may be missing.")
 
 if __name__ == "__main__":
     main()

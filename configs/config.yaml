@@ -11,7 +11,7 @@ project:
 
 run:
   # What you want to inspect/run now
-  init_month: "202602"         # YYYYMM
+  init_month: "202603"         # YYYYMM
   leads: [0, 1, 2, 3, 4, 5]     # always 0..5, but keep configurable for future flexibility
 
 paths:
@@ -20,6 +20,12 @@ paths:
 
   # 30-year normal rainfall ASCII rasters (monthly climatology)
   normal30y_ascii_dir: "D:/HII/OneDrive/HydroDataSci/Data/Rainfall/Interpolation/TMD/Raster/avg30y_update202111/avg30y_update202111/ascii"
+
+  # Observed monthly rasters
+  obs_monthly_raster_dir: "D:/HII/OneDrive/HydroDataSci/Data/Rainfall/Interpolation/TMD/Raster/observation 1 km/ascii"
+
+  # TMD forecast rasters (t1: init=target)
+  tmd_fcst_raster_dir: "D:/HII/OneDrive/HydroDataSci/Data/OneMap/data/tmd_fcst"
 
   # Zonal polygons
   basin_shp: "D:/HII/OneDrive/HydroDataSci/Data/Shapefile/basin_22/MainBasin_ONWR_WGS84_4K_3A_With_combindIsland_wgs.shp"
@@ -36,10 +42,11 @@ output:
   # Production outputs (future)
   extract_dir: "outputs/extract"
   excel_name: "rain_summary_{init_month}.xlsx"
+  obs_diff_excel_name: "obs_diff_summary_{init_month}.xlsx"
 
 models:
   # Canonical model list
-  order: ["HII", "OM_M", "OM_U", "OM_L"]
+  order: ["HII", "OM_W", "OM_U", "OM_L"]
 
   # สังเกตว่าต้องมี filename: ย่อหน้าเข้ามาก่อน แล้วค่อยเป็น prefix:
   HII:
@@ -48,10 +55,10 @@ models:
       prefix: "rain_fcst_hii_"
       ext: ".asc"
 
-  OM_M:
-    key: "OM_M"
+  OM_W:
+    key: "OM_W"
     filename:
-      prefix: "OM_MFCST_"
+      prefix: "OM_WFCST_"
       ext: ".asc"
 
   OM_U:
