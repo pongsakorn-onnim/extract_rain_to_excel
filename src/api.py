@@ -141,9 +141,9 @@ def run_obs_diff_batch_extraction(init_year: int, init_month: int) -> pd.DataFra
     name_col  = cfg['zones']['region']['name_field_th']
 
     fcst_path_map = {
-        "HII": lambda yyyymm: fcst_root / yyyymm / "OM" / f"rain_fcst_hii_{yyyymm}.asc",
-        "TMD": lambda yyyymm: tmd_fcst_dir / yyyymm / f"rain_tmd_fcst_{yyyymm}.asc",
-        "OM":  lambda yyyymm: fcst_root / yyyymm / "OM" / f"OM_WFCST_{yyyymm}.asc",
+        "HII":  lambda yyyymm: fcst_root / yyyymm / "OM" / f"rain_fcst_hii_{yyyymm}.asc",
+        "TMD":  lambda yyyymm: tmd_fcst_dir / yyyymm / f"rain_tmd_fcst_{yyyymm}.asc",
+        "OM_W": lambda yyyymm: fcst_root / yyyymm / "OM" / f"OM_WFCST_{yyyymm}.asc",
     }
 
     results = []
@@ -208,7 +208,7 @@ def run_obs_diff_extraction(model: str, year: int, month: int) -> dict:
     Fallback for group 2.10.1-2.10.3 obs-diff tables when senior's Excel is missing.
     Extracts obs and fcst zonal means (region) at lead 0, computes diff and pct.
 
-    model: "HII", "TMD", or "OM"
+    model: "HII", "TMD", or "OM_W"
     Returns: {thai_region_short_name: {"anomaly": float, "percent": float}}
       anomaly = obs - fcst (mm)
       percent = (obs - fcst) / fcst * 100
@@ -227,7 +227,7 @@ def run_obs_diff_extraction(model: str, year: int, month: int) -> dict:
         fcst_path = fcst_root / yyyymm / "OM" / f"rain_fcst_hii_{yyyymm}.asc"
     elif model == "TMD":
         fcst_path = tmd_fcst_dir / yyyymm / f"rain_tmd_fcst_{yyyymm}.asc"
-    elif model == "OM":
+    elif model == "OM_W":
         fcst_path = fcst_root / yyyymm / "OM" / f"OM_WFCST_{yyyymm}.asc"
     else:
         logger.error(f"run_obs_diff_extraction: unsupported model '{model}'")
